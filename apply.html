@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Apply · Cyber Raptors</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    background: black;
+    color: #ff3b3b;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 520px;
+    background: rgba(20, 0, 0, 0.9);
+    border: 2px solid #ff3b3b;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+    padding: 30px;
+    border-radius: 10px;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 0 0 15px #ff0000;
+  }
+
+  label {
+    display: block;
+    margin-top: 14px;
+    font-size: 0.95rem;
+  }
+
+  input, textarea, select {
+    width: 100%;
+    margin-top: 6px;
+    padding: 10px;
+    background: black;
+    color: #ffb3b3;
+    border: 1px solid #ff3b3b;
+    border-radius: 5px;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  button {
+    margin-top: 22px;
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    background: transparent;
+    color: #ff3b3b;
+    border: 2px solid #ff3b3b;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.2s;
+  }
+
+  button:hover {
+    background: #ff3b3b;
+    color: black;
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+  }
+
+  .note {
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: #ff9a9a;
+    text-align: center;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>Cyber Raptors Application</h1>
+
+  <form id="applyForm">
+
+    <label>Full Name *</label>
+    <input type="text" id="name" required>
+
+    <label>Grade *</label>
+    <select id="grade" required>
+      <option value="">Select</option>
+      <option>9</option>
+      <option>10</option>
+      <option>11</option>
+      <option>12</option>
+    </select>
+
+    <label>Why do you want to join?</label>
+    <textarea id="reason"></textarea>
+
+    <label>Best day for meetings</label>
+    <select id="day">
+      <option value="">Any</option>
+      <option>Monday</option>
+      <option>Tuesday</option>
+      <option>Wednesday</option>
+      <option>Thursday</option>
+      <option>Friday</option>
+    </select>
+
+    <label>Would you like to help organize club activities?</label>
+    <select id="help">
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+
+    <label>Any cybersecurity background?</label>
+    <input type="text" id="background" placeholder="Optional">
+
+    <label>Anything you'd like us to know?</label>
+    <textarea id="extra"></textarea>
+
+    <button type="submit">Submit Application</button>
+  </form>
+
+  <div class="note">
+    No experience required. All grades welcome.
+  </div>
+</div>
+
+<script>
+document.getElementById("applyForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const entry = {
+    name: name.value,
+    grade: grade.value,
+    reason: reason.value,
+    day: day.value,
+    help: help.value,
+    background: background.value,
+    extra: extra.value,
+    time: new Date().toISOString()
+  };
+
+  let apps = JSON.parse(localStorage.getItem("applications")) || [];
+  apps.push(entry);
+  localStorage.setItem("applications", JSON.stringify(apps));
+
+  alert("Application submitted. We will review it soon.");
+  this.reset();
+});
+</script>
+
+</body>
+</html>
