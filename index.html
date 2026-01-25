@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Welcome, EHS Cyber Raptors</title>
+  <title>Welcome · Cyber Raptors</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
@@ -39,8 +39,7 @@
     h1 {
       font-size: clamp(2.6rem, 6vw, 4.2rem);
       letter-spacing: 2px;
-      color: #ff3b3b;
-      text-shadow: 0 0 22px #ff0000;
+      text-shadow: 0 0 22px red;
     }
 
     .accent {
@@ -70,7 +69,7 @@
       font-size: 1rem;
       cursor: pointer;
       border-radius: 8px;
-      transition: all 0.2s ease;
+      transition: 0.2s;
       box-shadow: 0 0 18px rgba(255,0,0,0.45);
       display: flex;
       align-items: center;
@@ -84,13 +83,10 @@
       transform: translateY(-2px);
     }
 
-    .discord {
-      border-color: #ff0000;
-      color: #ff0000;
-    }
-
-    .discord:hover {
-      background: #ff0000;
+    .social img {
+      width: 18px;
+      height: 18px;
+      filter: invert(1);
     }
 
     footer {
@@ -108,29 +104,34 @@
 <canvas id="bg"></canvas>
 
 <div class="center">
-  <h1>Cyber Raptors</h1>
+  <h1>Welcome Cyber Raptors</h1>
 
   <p>
-    <span class="accent">Eagle Crest Cybersecurity Club</span><br>
-    Understanding systems deeply and acting responsibly.
+    <span class="accent">Eaglecrest High School Cybersecurity Club</span><br>
+    Understanding tools deeply, not just using them.
   </p>
 
   <div class="buttons">
-    <button onclick="goApply()">Apply to Join</button>
-    <button onclick="goAdmin()">Admin Login</button>
-    <button class="discord" onclick="goDiscord()">
-      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/discord.svg"
-           width="18" height="18" style="filter: invert(1);">
-      Join Discord
+    <button onclick="goJoin()">Apply to Join</button>
+
+    <button class="social" onclick="goDiscord()">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/discord.svg">
+      Discord
+    </button>
+
+    <button class="social" onclick="goInstagram()">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/instagram.svg">
+      Instagram
     </button>
   </div>
 </div>
 
 <footer>
-  © Cyber Raptors · Eagle Crest Cybersecurity Club
+  © Cyber Raptors · Made for students, by one student
 </footer>
 
 <script>
+/* ===== Canvas Background (unchanged, trimmed for clarity) ===== */
 const canvas = document.getElementById("bg");
 const ctx = canvas.getContext("2d");
 
@@ -172,10 +173,7 @@ function animate() {
 
     for (let j = i + 1; j < nodes.length; j++) {
       const m = nodes[j];
-      const dx = n.x - m.x;
-      const dy = n.y - m.y;
-      const d = Math.hypot(dx, dy);
-
+      const d = Math.hypot(n.x - m.x, n.y - m.y);
       if (d < MAX_DIST) {
         ctx.strokeStyle = `rgba(255,0,0,${1 - d / MAX_DIST})`;
         ctx.beginPath();
@@ -185,18 +183,23 @@ function animate() {
       }
     }
   }
+
   requestAnimationFrame(animate);
 }
 animate();
 
-function goApply() {
-  location.href = "apply.html";
-}
-function goAdmin() {
-  location.href = "admin.html";
+/* ===== NAV ===== */
+function goJoin() {
+  location.href = "join.html";
 }
 function goDiscord() {
   window.open("https://discord.gg/7RfR34ascE", "_blank");
+}
+function goInstagram() {
+  window.open(
+    "https://www.instagram.com/ehs_cybersecurity_club?igsh=amd6Nnk5MndjOWpk",
+    "_blank"
+  );
 }
 </script>
 
