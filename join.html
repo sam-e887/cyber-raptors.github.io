@@ -27,27 +27,28 @@
 
     .card {
       width: 100%;
-      max-width: 520px;
+      max-width: 540px;
       margin: auto;
       margin-top: 8vh;
       background: rgba(15, 0, 0, 0.92);
       border: 2px solid #ff3b3b;
-      border-radius: 14px;
-      padding: 30px;
-      box-shadow: 0 0 35px rgba(255, 0, 0, 0.55);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 0 40px rgba(255, 0, 0, 0.55);
       text-align: center;
     }
 
     h1 {
-      font-size: 2.3rem;
-      margin-bottom: 15px;
+      font-size: 2.4rem;
+      margin-bottom: 14px;
       text-shadow: 0 0 18px red;
     }
 
     p {
       color: #d0d8ff;
       margin-bottom: 25px;
-      font-size: 1rem;
+      font-size: 1.05rem;
+      line-height: 1.4;
     }
 
     label {
@@ -61,17 +62,18 @@
     input, textarea, select {
       width: 100%;
       margin-top: 6px;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 11px;
+      border-radius: 9px;
       border: 1px solid #ff3b3b;
       background: black;
       color: white;
       outline: none;
+      font-size: 0.95rem;
     }
 
     textarea {
       resize: vertical;
-      min-height: 80px;
+      min-height: 90px;
     }
 
     button {
@@ -85,17 +87,17 @@
       color: #ff3b3b;
       cursor: pointer;
       transition: 0.2s;
-      box-shadow: 0 0 20px rgba(255,0,0,0.45);
+      box-shadow: 0 0 22px rgba(255,0,0,0.45);
     }
 
     button:hover {
       background: #ff3b3b;
       color: black;
-      box-shadow: 0 0 35px rgba(255,0,0,0.9);
+      box-shadow: 0 0 40px rgba(255,0,0,0.9);
     }
 
     .back {
-      margin-top: 15px;
+      margin-top: 18px;
       display: inline-block;
       color: #3aa7ff;
       cursor: pointer;
@@ -104,9 +106,10 @@
     }
 
     #msg {
-      margin-top: 15px;
-      color: #3aa7ff;
+      margin-top: 16px;
       font-size: 0.95rem;
+      color: #3aa7ff;
+      min-height: 22px;
     }
   </style>
 </head>
@@ -119,11 +122,12 @@
   <h1>Join Cyber Raptors</h1>
 
   <p>
-    Apply to Eagle Crest High School’s Cybersecurity Club.
-    No experience required.
+    Apply to Eagle Crest High School’s Cybersecurity Club.<br>
+    No experience required. All grades welcome.
   </p>
 
   <form id="form">
+
     <label>Full Name *</label>
     <input type="text" id="name" required>
 
@@ -140,7 +144,7 @@
     <input type="email" id="email" required>
 
     <label>Why do you want to join?</label>
-    <textarea id="experience"></textarea>
+    <textarea id="experience" placeholder="Optional"></textarea>
 
     <button type="submit">Submit Application</button>
   </form>
@@ -150,23 +154,75 @@
   <div class="back" onclick="goBack()">← Back to Home</div>
 </div>
 
+
+<!-- ✅ Supabase Library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-/* ===== BACK BUTTON ===== */
+/* ============================================
+   BACK BUTTON
+============================================ */
 function goBack() {
   location.href = "index.html";
 }
 
-/* ===== FORM (TEMP MODE) ===== */
-document.getElementById("form").addEventListener("submit", function(e) {
+
+/* ============================================
+   SUPABASE CONFIG (REPLACE WITH REAL VALUES)
+============================================ */
+
+const SUPABASE_URL =
+  "https://xgvqmtumbtfvfuxodbhz.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_dcTG9rcxslX9Nw9-IwcbcQ_ChDcIgwP";
+
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+
+/* ============================================
+   FORM SUBMIT → TABLE: applications1
+============================================ */
+
+document.getElementById("form").addEventListener("submit", async function(e) {
   e.preventDefault();
 
-  document.getElementById("msg").textContent =
-    "Form works. Backend connection comes next.";
+  const msg = document.getElementById("msg");
 
-  this.reset();
+  const name = document.getElementById("name").value.trim();
+  const grade = document.getElementById("grade").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const experience = document.getElementById("experience").value.trim();
+
+  msg.textContent = "Submitting...";
+
+  const { error } = await db
+    .from("applications1")
+    .insert([
+      {
+        name: name,
+        grade: grade,
+        email: email,
+        experience: experience
+      }
+    ]);
+
+  if (error) {
+    msg.textContent = "Error: " + error.message;
+  } else {
+    msg.textContent = "Application submitted successfully!";
+    this.reset();
+  }
 });
 
-/* ===== NEURAL BACKGROUND ===== */
+
+/* ============================================
+   NEURAL BACKGROUND ANIMATION
+============================================ */
+
 const canvas = document.getElementById("bg");
 const ctx = canvas.getContext("2d");
 
@@ -185,8 +241,8 @@ for (let i = 0; i < NODE_COUNT; i++) {
   nodes.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    vx: (Math.random() - 0.5) * 0.4,
-    vy: (Math.random() - 0.5) * 0.4
+    vx: (Math.random() - 0.5) * 0.45,
+    vy: (Math.random() - 0.5) * 0.45
   });
 }
 
@@ -201,11 +257,13 @@ function animate() {
     if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
     if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
 
+    /* Red Nodes */
     ctx.fillStyle = "#ff3b3b";
     ctx.beginPath();
     ctx.arc(n.x, n.y, 2, 0, Math.PI * 2);
     ctx.fill();
 
+    /* Blue Connections */
     for (let j = i + 1; j < nodes.length; j++) {
       const m = nodes[j];
       const d = Math.hypot(n.x - m.x, n.y - m.y);
